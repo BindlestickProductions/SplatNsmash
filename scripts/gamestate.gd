@@ -166,6 +166,7 @@ var old_delay
 
 remote func ping_master(id,time):
 	var delay = OS.get_system_time_msecs()-time
+	players[id].p_rtt=delay;
 	print(id)
 	#print("got ping from "+ players[id] + " = "+str(delay))
 	
@@ -174,6 +175,14 @@ var server_time
 remote func ping_test(time):
 	server_time=time
 	rpc_unreliable_id(1,"ping_master",get_tree().get_network_unique_id(),time)
+	
+	
+remote func update_rtt(rtt_time):
+	print("got new rtt drop: " + str(rtt_time))
+	#print("list of players id's:")
+	#for p in players:
+	#	print(p)
+	players[1].p_rtt = rtt_time
 	
 
 var process_throttle=200
@@ -186,10 +195,13 @@ func _physics_process(delta):
 			if (players_ready.size() == players.size()):
 				var i = 0
 				for p in players:
+					print("Sending RPC to "+str(p))
+					rpc_id(p,"update_rtt",players[p].p_rtt)
 					rpc_unreliable_id(p,"ping_test",OS.get_system_time_msecs())
-					print(p)
-					print(players_delay[i])
 					i+=1
+		else:
+			if(players):	
+				print("My RTT is: " + str(players[1].p_rtt))
 		
 
 func host_game(port, new_player_name):

@@ -52,8 +52,8 @@ func _physics_process(delta):
 
 
 func _on_rock_body_entered(body):
-	print("ouch! it was: ")
-	for entity in get_colliding_bodies():
-		print(entity.name)
+	#print("ouch! it was: ")
+	#for entity in get_colliding_bodies():
+	#	print(entity.name)
 	
 	pass # Replace with function body.
