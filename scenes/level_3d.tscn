@@ -29,6 +29,9 @@ margin_bottom = 40.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="winner" type="Label" parent="."]
 visible = false
@@ -62,7 +65,6 @@ transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 10.3464,
 [node name="floor" parent="." instance=ExtResource( 3 )]
 
 [node name="spawn_points" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="0" type="Position3D" parent="spawn_points"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0.6, -5 )

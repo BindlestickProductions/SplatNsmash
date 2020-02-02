@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/Player3d.gd" type="Script" id=1]
 [ext_resource path="res://materials/player_spatmat.tres" type="Material" id=2]
+[ext_resource path="res://gutenberg.tres" type="DynamicFont" id=3]
 
 [sub_resource type="SphereMesh" id=1]
 radius = 0.5
@@ -126,9 +127,13 @@ margin_left = -30.5348
 margin_top = -37.2211
 margin_right = 30.4652
 margin_bottom = -23.2211
+custom_fonts/font = ExtResource( 3 )
 text = "My Name"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.993897, -0.0533923, 0.0965258, 0, 0.875053, 0.484027, -0.110308, -0.481074, 0.869713, 2.3227, 1.41276, 0 )

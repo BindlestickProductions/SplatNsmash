@@ -533,7 +533,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0.5, 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.5, 1 )
 
 [node name="spawn_points" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="0" type="Position3D" parent="spawn_points"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0.6, -5 )
@@ -560,7 +559,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.6, 4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.6, 0 )
 
 [node name="rocks" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="rock" parent="rocks" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.5, -6 )
