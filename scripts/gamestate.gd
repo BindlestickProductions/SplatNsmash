@@ -2,9 +2,15 @@ extends Node
 
 class RemotePlayer:
 	var p_name
-	var p_rtt
+	var p_rtt=50
 	func _init(name):
 		p_name=name
+
+class CommandPacket:
+	var cp_key
+	var cp_mousex
+	var cp_mousey
+	var cp_seq
 
 class StateSyncPacket:
 	var ssp_transform : Transform 
@@ -12,11 +18,7 @@ class StateSyncPacket:
 	var ssp_angular : Vector3
 	var ssp_seq
 	
-class CommandPacket:
-	var cp_key
-	var cp_mousex
-	var cp_mousey
-	var cp_seq
+
 	
 # Default game port
 var DEFAULT_PORT : int = 10567
@@ -29,6 +31,7 @@ var player_name = "The Warrior"
 
 var level_3d
 var game_started = false
+
 
 # Names for remote players in id:name format
 var players = {}
