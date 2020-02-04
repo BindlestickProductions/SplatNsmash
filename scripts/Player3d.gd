@@ -39,6 +39,7 @@ sync func setup_bomb(bomb_name, pos, by_who):
 	bomb.from_player = by_who
 	# No need to set network mode to bomb, will be owned by master by default
 	get_node("../..").add_child(bomb)
+	
 
 
 # Called when the node enters the scene tree for the first time.
@@ -75,15 +76,13 @@ func _physics_process(delta):
 	else:
 		velocity += gravity * delta
 	
-	if (is_network_master()):
+	if(get_tree().is_network_server()):
+		#for p in gamestate.players:
 		if(netCounter%ticksPerUpdate == 0):
 			rpc_unreliable("rpc_player_sync",get_transform(),slave_motion,OS.get_system_time_msecs())	
 	
 	if (is_network_master()):
 		# get teh imput here  
-		
-
-		
 		var bombing = Input.is_action_pressed("set_bomb")
 		if (stunned):
 			bombing = false

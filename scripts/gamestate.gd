@@ -3,6 +3,8 @@ extends Node
 class RemotePlayer:
 	var p_name
 	var p_rtt=50
+	var clock_skew
+	
 	func _init(name):
 		p_name=name
 
@@ -18,7 +20,7 @@ class StateSyncPacket:
 	var ssp_angular : Vector3
 	var ssp_seq
 	
-
+var game_clock = 0
 	
 # Default game port
 var DEFAULT_PORT : int = 10567
@@ -57,7 +59,7 @@ func _player_connected(id):
 func _player_disconnected(id):
 	if (get_tree().is_network_server()):
 		if (has_node("/root/level_3d")): # Game is in progress
-			emit_signal("game_error", "Player " + players[id] + " disconnected")
+			emit_signal("game_error", "Player " + str(players[id]) + " disconnected")
 			end_game()
 		else: # Game is not in progress
 			# If we are the server, send to the new dude all the already registered players
@@ -166,34 +168,38 @@ remote func ready_to_start(id):
 		post_start_game()
 
 var old_delay
-
-remote func ping_master(id,time):
-	var delay = OS.get_system_time_msecs()-time
-	players[id].p_rtt=delay;
-	print(id)
-	#print("got ping from "+ players[id] + " = "+str(delay))
-	
+var ravg_rtt = 50
 var server_time
-	
+# Running on Server
+remote func ping_master(id,time,client_time):
+	var sv_time = OS.get_system_time_msecs()
+	var delay = sv_time-time
+	players[id].p_rtt=delay;
+	players[id].clock_skew=client_time-sv_time;
+	ravg_rtt=(ravg_rtt+delay)/2.0
+	print(" Player " + str(id))
+	print("   #  RTT : " + str(players[id].p_rtt))
+	print("   # Skew : " + str(players[id].clock_skew))
+
+
+
+# Running on Clients 
 remote func ping_test(time):
 	server_time=time
-	rpc_unreliable_id(1,"ping_master",get_tree().get_network_unique_id(),time)
+	rpc_unreliable_id(1,"ping_master",get_tree().get_network_unique_id(),time,OS.get_system_time_msecs())
 	
-	
+# Running on clients:	
 remote func update_rtt(rtt_time):
 	print("got new rtt drop: " + str(rtt_time))
-	#print("list of players id's:")
-	#for p in players:
-	#	print(p)
 	players[1].p_rtt = rtt_time
 	
 
-var process_throttle=200
+
+var process_throttle=10
 var process_throttle_counter=0
 func _physics_process(delta):
 	process_throttle_counter+=1
-	if(process_throttle_counter > process_throttle):
-		process_throttle_counter=0
+	if(process_throttle_counter % process_throttle == 0):
 		if(get_tree().is_network_server()):
 			if (players_ready.size() == players.size()):
 				var i = 0
